@@ -13,5 +13,5 @@ Function `M(α, μ, σ)` returns the exact expectation  of ∫ N(x|μ, σ) α⋅
 Function `V(α, μ, σ)` returns an upper bound to ∫ N(x| μ, σ) ⋅ (α*Φ(x) - M(α, μ, σ))² dx
 
 ### Expectation of square
-Function `B(α, μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [α⋅Φ(x)]² dx ≤ V(μ, σ) + [M(μ, σ)]² 
+Function `B(α, μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [α⋅Φ(x)]² dx ≤ V(μ, σ) + [M(μ, σ)]² = B(α, μ, σ)
 
