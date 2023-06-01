@@ -1,4 +1,4 @@
-one_dim_integral(f; lb=-100.0, ub=100.0, dx=1e-4) = mapreduce(f,+,lb:dx:ub)*dx
+one_dim_integral(f; lb=-100.0, ub=100.0, dx=1e-3) = mapreduce(f,+,lb:dx:ub)*dx
 
 #-----------------------------------------------------------
 
