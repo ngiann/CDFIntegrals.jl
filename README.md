@@ -15,3 +15,17 @@ Function `V(α, μ, σ)` returns an upper bound to ∫ N(x| μ, σ) ⋅ (α*Φ(x
 ### Expectation of square
 Function `B(α, μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [α⋅Φ(x)]² dx ≤ V(μ, σ) + [M(μ, σ)]² = B(α, μ, σ)
 
+### Example
+
+```
+using CDFIntegrals
+using PyPlot # must be indepedently installed
+
+plot(x, M.(x,σ),"blue",label="mean of noisy cdfs")
+plot(x, M.(x,σ) .+ CDFIntegrals.V.(x,σ),"--r",label="variance")
+plot(x, M.(x,σ) .- CDFIntegrals.V.(x,σ),"--r")
+plot(x, CDFIntegrals.Φ.(x),"g",label="cdf")
+
+legend()
+```
+![example](cdf_with_interval.png)
