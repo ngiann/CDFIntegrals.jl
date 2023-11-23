@@ -9,6 +9,6 @@ module CDFIntegrals
     
     Φ(x) = StatsFuns.normcdf(x)
     
-    export M, B
+    export M, B, MB
     
 end
