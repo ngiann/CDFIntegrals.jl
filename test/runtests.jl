@@ -123,5 +123,22 @@ include("test_quadrature.jl")
     end
 
 
+    ###############################################################
+    # Verify that MB(μ, σ) returns M(μ, σ) and B(μ, σ) correctly
+    ###############################################################
+
+    let 
+        @printf("Testing MB(μ, σ)\n")
+        
+        μ, σ = randn(rg)*3, rand(rg)*3
+        
+        m, b = MB(μ, σ)
+
+
+        @test (m == M(μ, σ)) && (B(μ, σ)) == true
+        
+    end
+
+
 end
 
