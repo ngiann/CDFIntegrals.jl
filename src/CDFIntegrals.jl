@@ -4,11 +4,10 @@ module CDFIntegrals
 
     include("integral_closed_form.jl")
 
-    
     ϕ(x) = StatsFuns.normpdf(x)
     
     Φ(x) = StatsFuns.normcdf(x)
     
-    export M, B, MB
+    export M, B, MB, MBapprox
     
 end

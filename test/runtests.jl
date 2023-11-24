@@ -1,4 +1,4 @@
-using CDFIntegrals: M, B, V, Φ, ϕ, Bslow
+using CDFIntegrals: M, B, V, Φ, ϕ, Bslow, MB, MBapprox
 
 using Test, Random, HCubature, QuadGK, Printf, Distributions, ProgressMeter
 
@@ -128,17 +128,41 @@ include("test_quadrature.jl")
     ###############################################################
 
     let 
+
         @printf("Testing MB(μ, σ)\n")
         
         μ, σ = randn(rg)*3, rand(rg)*3
         
         m, b = MB(μ, σ)
 
-
-        @test (m == M(μ, σ)) && (B(μ, σ)) == true
+        @test (m == M(μ, σ)) && (b == (B(μ, σ)))
         
     end
 
+
+    ###############################################################
+    # Report discrepancy in approximation MBapprox(μ, σ)
+    ###############################################################
+
+    let 
+        
+        maxdiscrepancy = 0.0
+
+        @showprogress "Reporting maximum discrepancy for approximation MBapprox(μ, σ)" for _ in 1:numsamples
+
+            μ, σ = randn(rg)*3, rand(rg)*3
+        
+            m, b = MB(μ, σ)
+            
+            mapprox, bapprox = MBapprox(μ, σ)
+
+            maxdiscrepancy = max(maxdiscrepancy, abs(mapprox - m), abs(b - bapprox))
+
+        end
+
+        @printf("\t Maximum discepancy is %f\n", maxdiscrepancy)
+        
+    end
 
 end
 
