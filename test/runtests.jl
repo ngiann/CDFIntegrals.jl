@@ -25,7 +25,7 @@ include("test_quadrature.jl")
 
         greatest_discrepancy = 0.0
         
-        @showprogress "Testing M(μ, σ)" for _ in 1:numsamples
+        @showprogress desc="Testing M(μ, σ)" for _ in 1:numsamples
 
             μ, σ = randn(rg)*3, rand(rg)*3
 
@@ -53,7 +53,7 @@ include("test_quadrature.jl")
         
         greatest_discrepancy = 0.0
         
-        @showprogress "Testing V(μ, σ)" for _ in 1:numsamples
+        @showprogress desc="Testing V(μ, σ)" for _ in 1:numsamples
 
             μ, σ = randn(rg)*3, rand(rg)*3
            
@@ -81,7 +81,7 @@ include("test_quadrature.jl")
         
         greatest_discrepancy = 0.0
         
-        @showprogress "Testing B(μ, σ)" for _ in 1:numsamples
+        @showprogress desc="Testing B(μ, σ)" for _ in 1:numsamples
 
             μ, σ = randn(rg)*3, rand(rg)*3
            
