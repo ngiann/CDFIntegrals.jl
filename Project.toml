@@ -1,7 +1,7 @@
 name = "CDFIntegrals"
 uuid = "c315eb13-d14d-45c6-a93f-2ca8f34325ea"
 authors = ["ngiann <ngiann@gmail.com> and contributors"]
-version = "1.0.2-DEV"
+version = "1.0.3-DEV"
 
 [deps]
 HCubature = "19dc6840-f33b-545b-b366-655c7e3ffd49"
