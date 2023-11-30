@@ -7,13 +7,13 @@ Variational Learning in Nonlinear Gaussian Belief Networks,1998
 https://www.cs.toronto.edu/~hinton/absps/nlgbn.pdf
 
 ### Expectation
-Exported function `M(α, μ, σ)` returns the exact expectation  of ∫ N(x|μ, σ) α⋅Φ(x) dx where Φ(x) is the standard cumulative normal.
+Exported function `M(μ, σ)` returns the exact expectation  of ∫ N(x|μ, σ) Φ(x) dx where Φ(x) is the standard cumulative normal.
 
 ### Variance
-Non-exported function `V(α, μ, σ)` returns an upper bound to ∫ N(x| μ, σ) ⋅ (α*Φ(x) - M(α, μ, σ))² dx.
+Non-exported function `V(μ, σ)` returns an upper bound to ∫ N(x| μ, σ) ⋅ (Φ(x) - M(μ, σ))² dx.
 
 ### Expectation of square
-Exported function `B(α, μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [α⋅Φ(x)]² dx ≤ V(μ, σ) + [M(μ, σ)]² = B(α, μ, σ).
+Exported function `B(μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [Φ(x)]² dx ≤ V(μ, σ) + [M(μ, σ)]² = B(μ, σ).
 
 ### Example
 
