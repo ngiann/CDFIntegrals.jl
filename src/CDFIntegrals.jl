@@ -1,13 +1,17 @@
 module CDFIntegrals
 
-    using StatsFuns, HCubature, QuadGK
+    using StatsFuns, HCubature, QuadGK, IrrationalConstants, SpecialFunctions, LinearAlgebra
 
     include("integral_closed_form.jl")
 
+    include("owent.jl") # code written by Andy Gough, uploaded in julia forum
+
+    include("EPhiSquared.jl")
+    
     ϕ(x) = StatsFuns.normpdf(x)
     
     Φ(x) = StatsFuns.normcdf(x)
     
-    export M, B, MB, MBapprox
+    export M, B, V
     
 end
