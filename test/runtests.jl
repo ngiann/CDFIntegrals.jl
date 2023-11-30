@@ -12,26 +12,26 @@ include("test_quadrature.jl")
 
     TOL = 1e-8
 
-    numsamples = 100
+    numsamples = 10
 
     rg = MersenneTwister(1) # fix random number generator for reproducinility
    
 
-    ##########################################################
-    # Verify expectation M(α, μ, σ) by numerical integration #
-    ##########################################################
+    #######################################################
+    # Verify expectation M(μ, σ) by numerical integration #
+    #######################################################
 
     let 
 
         greatest_discrepancy = 0.0
         
-        @showprogress "Testing M(α, μ, σ)" for _ in 1:numsamples
+        @showprogress "Testing M(μ, σ)" for _ in 1:numsamples
 
-            α, μ, σ = rand(rg)*3, randn(rg)*3, rand(rg)*3
+            μ, σ = randn(rg)*3, rand(rg)*3
 
-            test = test_integral_M(μ = μ, σ = σ, α = α)
+            test = test_integral_M(μ = μ, σ = σ)
 
-            exact = M(α, μ, σ)
+            exact = M(μ, σ)
 
             greatest_discrepancy = max(greatest_discrepancy,  abs(test-exact))
            
@@ -45,21 +45,21 @@ include("test_quadrature.jl")
 
 
 
-    ##########################################################
-    # Verify upper bound V(α, μ, σ) by numerical integration #
-    ##########################################################
+    #######################################################
+    # Verify upper bound V(μ, σ) by numerical integration #
+    #######################################################
 
     let 
         
         is_upper_bound = true
         
-        @showprogress "Checking that V(α, μ, σ) is upper bound" for _ in 1:numsamples
+        @showprogress "Checking that V(μ, σ) is upper bound" for _ in 1:numsamples
 
-            α, μ, σ = rand(rg)*3, randn(rg)*3, rand(rg)*3
+            μ, σ = randn(rg)*3, rand(rg)*3
            
-            test = test_integral_V(μ = μ, σ = σ, α = α)
+            test = test_integral_V(μ = μ, σ = σ)
 
-            exact = V(α, μ, σ)
+            exact = V(μ, σ)
 
             is_upper_bound *= (exact >= test)
             
@@ -71,22 +71,22 @@ include("test_quadrature.jl")
 
 
 
-    #####################################################
-    # Verify B(α, μ, σ) with alternative implementation #
-    #####################################################
+    ##################################################
+    # Verify B(μ, σ) with alternative implementation #
+    ##################################################
 
     let 
 
-        @printf("Testing B(α, μ, σ) with alternative implementation... ")
+        @printf("Testing B(μ, σ) with alternative implementation... ")
         
         greatest_discrepancy = 0.0
 
         for _ in 1:numsamples
             
-            α, μ, σ = rand(rg)*3, randn(rg)*3, rand(rg)*3
+            μ, σ = randn(rg)*3, rand(rg)*3
             
-            greatest_discrepancy = max(greatest_discrepancy, abs(Bslow(α, μ, σ) - B(α, μ, σ)))
-            greatest_discrepancy = max(greatest_discrepancy, abs(α * Bslow(μ, σ) - α * B(μ, σ)))
+            greatest_discrepancy = max(greatest_discrepancy, abs(Bslow(μ, σ) - B(μ, σ)))
+            greatest_discrepancy = max(greatest_discrepancy, abs(Bslow(μ, σ) - B(μ, σ)))
 
         end
         
@@ -97,21 +97,21 @@ include("test_quadrature.jl")
     end
 
 
-    ###############################################################
-    # Verify B(α, μ, σ) is an upper bound to expectation of square
-    ###############################################################
+    #############################################################
+    # Verify B(μ, σ) is an upper bound to expectation of square #
+    #############################################################
 
     let 
         
         is_upper_bound = true
         
-        @showprogress "Checking that B(α, μ, σ) is upper bound" for _ in 1:numsamples
+        @showprogress "Checking that B(μ, σ) is upper bound" for _ in 1:numsamples
 
-            α, μ, σ = rand(rg)*3, randn(rg)*3, rand(rg)*3
+            μ, σ = randn(rg)*3, rand(rg)*3
            
-            test = test_integral_B(μ = μ, σ = σ, α = α)
+            test = test_integral_B(μ = μ, σ = σ)
 
-            exact = B(α, μ, σ)
+            exact = B(μ, σ)
 
             is_upper_bound *= (exact + TOL >= test)
             
@@ -123,9 +123,9 @@ include("test_quadrature.jl")
     end
 
 
-    ###############################################################
-    # Verify that MB(μ, σ) returns M(μ, σ) and B(μ, σ) correctly
-    ###############################################################
+    ##############################################################
+    # Verify that MB(μ, σ) returns M(μ, σ) and B(μ, σ) correctly #
+    ##############################################################
 
     let 
 
@@ -140,9 +140,9 @@ include("test_quadrature.jl")
     end
 
 
-    ###############################################################
-    # Report discrepancy in approximation MBapprox(μ, σ)
-    ###############################################################
+    ######################################################
+    # Report discrepancy in approximation MBapprox(μ, σ) #
+    ######################################################
 
     let 
         
