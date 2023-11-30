@@ -21,6 +21,8 @@ Exported function `B(μ, σ)` returns an upper bound to ∫ N(x|μ, σ) [Φ(x)]�
 using CDFIntegrals
 using PyPlot # must be indepedently installed
 
+μ, σ = 1, 2
+x = -10:0.01:10
 plot(x, M.(x,σ),"blue",label="mean of noisy cdfs")
 plot(x, M.(x,σ) .+ CDFIntegrals.V.(x,σ),"--r",label="variance")
 plot(x, M.(x,σ) .- CDFIntegrals.V.(x,σ),"--r")
