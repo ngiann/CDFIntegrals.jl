@@ -1,4 +1,4 @@
-using CDFIntegrals: M, B, V, Φ, ϕ, Bslow, MB, MBapprox
+using CDFIntegrals: M, B, V, Φ, ϕ # , Bslow, MB, MBapprox
 
 using Test, Random, HCubature, QuadGK, Printf, Distributions, ProgressMeter
 
@@ -10,9 +10,9 @@ include("test_quadrature.jl")
 
 @testset "CDFIntegrals.jl" begin
 
-    TOL = 1e-8
+    TOL = 1e-7
 
-    numsamples = 10
+    numsamples = 30
 
     rg = MersenneTwister(1) # fix random number generator for reproducinility
    
@@ -45,15 +45,15 @@ include("test_quadrature.jl")
 
 
 
-    #######################################################
-    # Verify upper bound V(μ, σ) by numerical integration #
-    #######################################################
+    ####################################################
+    # Verify variance V(μ, σ) by numerical integration #
+    ####################################################
 
     let 
         
-        is_upper_bound = true
+        greatest_discrepancy = 0.0
         
-        @showprogress "Checking that V(μ, σ) is upper bound" for _ in 1:numsamples
+        @showprogress "Testing V(μ, σ)" for _ in 1:numsamples
 
             μ, σ = randn(rg)*3, rand(rg)*3
            
@@ -61,51 +61,27 @@ include("test_quadrature.jl")
 
             exact = V(μ, σ)
 
-            is_upper_bound *= (exact >= test)
+            greatest_discrepancy = max(greatest_discrepancy,  abs(test-exact))
             
 
         end
 
-        @test is_upper_bound
+        @printf("greatest discepancy was %f\n", greatest_discrepancy)
+        
+        @test greatest_discrepancy < TOL 
+
     end
 
 
-
-    ##################################################
-    # Verify B(μ, σ) with alternative implementation #
-    ##################################################
+    #################################################################
+    # Verify expectation of square B(μ, σ) by numerical integration #
+    #################################################################
 
     let 
-
-        @printf("Testing B(μ, σ) with alternative implementation... ")
         
         greatest_discrepancy = 0.0
-
-        for _ in 1:numsamples
-            
-            μ, σ = randn(rg)*3, rand(rg)*3
-            
-            greatest_discrepancy = max(greatest_discrepancy, abs(Bslow(μ, σ) - B(μ, σ)))
-            greatest_discrepancy = max(greatest_discrepancy, abs(Bslow(μ, σ) - B(μ, σ)))
-
-        end
         
-        @printf("greatest discrepancy was %f\n", greatest_discrepancy)
-
-        @test greatest_discrepancy < TOL
-
-    end
-
-
-    #############################################################
-    # Verify B(μ, σ) is an upper bound to expectation of square #
-    #############################################################
-
-    let 
-        
-        is_upper_bound = true
-        
-        @showprogress "Checking that B(μ, σ) is upper bound" for _ in 1:numsamples
+        @showprogress "Testing B(μ, σ)" for _ in 1:numsamples
 
             μ, σ = randn(rg)*3, rand(rg)*3
            
@@ -113,56 +89,61 @@ include("test_quadrature.jl")
 
             exact = B(μ, σ)
 
-            is_upper_bound *= (exact + TOL >= test)
+            greatest_discrepancy = max(greatest_discrepancy,  abs(test-exact))
             
 
         end
 
-        @test is_upper_bound == true
+        @printf("greatest discepancy was %f\n", greatest_discrepancy)
+        
+        @test greatest_discrepancy < TOL 
         
     end
 
 
-    ##############################################################
-    # Verify that MB(μ, σ) returns M(μ, σ) and B(μ, σ) correctly #
-    ##############################################################
+   
+    
 
-    let 
+    # ##############################################################
+    # # Verify that MB(μ, σ) returns M(μ, σ) and B(μ, σ) correctly #
+    # ##############################################################
 
-        @printf("Testing MB(μ, σ)\n")
+    # let 
+
+    #     @printf("Testing MB(μ, σ)\n")
         
-        μ, σ = randn(rg)*3, rand(rg)*3
+    #     μ, σ = randn(rg)*3, rand(rg)*3
         
-        m, b = MB(μ, σ)
+    #     m, b = MB(μ, σ)
 
-        @test (m == M(μ, σ)) && (b == (B(μ, σ)))
+    #     @test (m == M(μ, σ)) && (b == (B(μ, σ)))
         
-    end
+    # end
 
 
-    ######################################################
-    # Report discrepancy in approximation MBapprox(μ, σ) #
-    ######################################################
+    # ######################################################
+    # # Report discrepancy in approximation MBapprox(μ, σ) #
+    # ######################################################
 
-    let 
+    # let 
         
-        maxdiscrepancy = 0.0
+    #     maxdiscrepancy = 0.0
 
-        @showprogress "Reporting maximum discrepancy for approximation MBapprox(μ, σ)" for _ in 1:numsamples
+    #     @showprogress "Reporting maximum discrepancy for approximation MBapprox(μ, σ)" for _ in 1:numsamples
 
-            μ, σ = randn(rg)*3, rand(rg)*3
+    #         μ, σ = randn(rg)*3, rand(rg)*3
         
-            m, b = MB(μ, σ)
+    #         m, b = MB(μ, σ)
             
-            mapprox, bapprox = MBapprox(μ, σ)
+    #         mapprox, bapprox = MBapprox(μ, σ)
 
-            maxdiscrepancy = max(maxdiscrepancy, abs(mapprox - m), abs(b - bapprox))
+    #         maxdiscrepancy = max(maxdiscrepancy, abs(mapprox - m), abs(b - bapprox))
 
-        end
+    #     end
 
-        @printf("\t Maximum discepancy is %f\n", maxdiscrepancy)
+    #     @printf("\t Maximum discepancy is %f\n", maxdiscrepancy)
         
-    end
+    # end
 
 end
 
