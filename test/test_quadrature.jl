@@ -16,7 +16,9 @@ function test_integral_V(;μ = μ, σ = σ)
 
     d = Normal(μ, σ)
 
-    one_dim_integral(x ->  pdf(d, x) * (Φ(x) - M(μ, σ))^2)
+    Mμσ = M(μ, σ)
+
+    one_dim_integral(x ->  pdf(d, x) * (Φ(x) - Mμσ)^2)
     
 end
 
