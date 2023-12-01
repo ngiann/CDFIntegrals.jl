@@ -12,8 +12,10 @@ module CDFIntegrals
     
     Φ(x) = StatsFuns.normcdf(x)
     
+    export Φ
+
     export M, B, V
 
-    export Bupper
+    export Bup
     
 end
